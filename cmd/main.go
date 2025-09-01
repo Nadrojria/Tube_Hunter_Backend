@@ -1,32 +1,25 @@
 package main
 
 import (
-	"database/sql"
-	"log"
-
-	"github.com/gin-gonic/gin"
-	_ "github.com/mattn/go-sqlite3"
+    "github.com/gin-gonic/gin"
+    "tubeHunter/internal/handler"
+    "tubeHunter/internal/repository"
+    "tubeHunter/internal/seeder"
+    "tubeHunter/pkg"
 )
 
 func main() {
-	// Connexion SQLite
-	db, err := sql.Open("sqlite3", "./test.db")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
+    db := pkg.InitDB("./tubeHunter.db")
+    
+    seeder.SeedSpots(db)
+    seeder.SeedLocations(db)
 
-	// Création table si inexistante
-	_, err = db.Exec("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)")
-	if err != nil {
-		log.Fatal(err)
-	}
+    repo := &repository.SpotRepository{DB: db}
+    handler := &handler.SpotHandler{Repo: repo}
 
-	// Gin
-	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{"message": "Hello depuis Gin + SQLite + Go !"})
-	})
+    router := gin.Default()
+    router.GET("/spots", handler.GetSpots)
+    router.POST("/spots", handler.CreateSpot)
 
-	r.Run(":8080")
+    router.Run(":8080")
 }
