@@ -1,18 +1,19 @@
 package pkg
 
 import (
-    "database/sql"
-    _ "github.com/mattn/go-sqlite3"
-    "log"
+	"database/sql"
+	"log"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 func InitDB(filepath string) *sql.DB {
-    db, err := sql.Open("sqlite3", filepath)
-    if err != nil {
-        log.Fatal(err)
-    }
+	db, err := sql.Open("sqlite3", filepath)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    createSpots := `
+	createSpots := `
     CREATE TABLE IF NOT EXISTS spots (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         photo_url TEXT,
@@ -20,16 +21,16 @@ func InitDB(filepath string) *sql.DB {
         location_id INTEGER,
         difficulty INTEGER,
         surf_breaks TEXT,
-        season_start TEXT,
-        season_end TEXT,
+        season_start DATETIME,
+        season_end DATETIME,
         FOREIGN KEY(location_id) REFERENCES locations(id)
     );`
-    _, err = db.Exec(createSpots)
-    if err != nil {
-        log.Fatal(err)
-    }
+	_, err = db.Exec(createSpots)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    createLocations := `
+	createLocations := `
     CREATE TABLE IF NOT EXISTS locations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         country TEXT,
@@ -37,10 +38,10 @@ func InitDB(filepath string) *sql.DB {
         lat INTEGER,
         long INTEGER
     );`
-    _, err = db.Exec(createLocations)
-    if err != nil {
-        log.Fatal(err)
-    }
+	_, err = db.Exec(createLocations)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-    return db
+	return db
 }
