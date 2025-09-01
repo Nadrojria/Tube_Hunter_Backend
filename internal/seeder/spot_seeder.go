@@ -1,44 +1,224 @@
 package seeder
 
 import (
-    "database/sql"
-    "log"
-    "tubeHunter/internal/model"
-    "time"
+	"database/sql"
+	"log"
+	"time"
+	"tubeHunter/internal/model"
 )
 
 var Spots = []model.Spot{
-    {
-        ID:          1,
-        PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
-        Name:        "Le petit Nice",
-        LocationID:  1,
-        Difficulty:  4,
-        SurfBreaks:  "Reef Break",
-        SeasonStart: time.Date(2025, time.April, 1, 0, 0, 0, 0, time.UTC),
-        SeasonEnd:   time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC),
-    },
-    {
-        ID:          2,
-        PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
-        Name:        "Nazare",
-        LocationID:  2,
-        Difficulty:  5,
-        SurfBreaks:  "Point Break",
-        SeasonStart: time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC),
-        SeasonEnd:   time.Date(2026, time.February, 28, 0, 0, 0, 0, time.UTC),
-    },
+	{
+		ID:          1,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Le petit Nice",
+		LocationID:  1,
+		Difficulty:  4,
+		SurfBreaks:  "Reef Break",
+		SeasonStart: time.Date(2025, time.April, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          2,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Nazare",
+		LocationID:  2,
+		Difficulty:  5,
+		SurfBreaks:  "Point Break",
+		SeasonStart: time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2026, time.February, 28, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          3,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Hossegor",
+		LocationID:  3,
+		Difficulty:  4,
+		SurfBreaks:  "Beach Break",
+		SeasonStart: time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          4,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Pipeline",
+		LocationID:  4,
+		Difficulty:  5,
+		SurfBreaks:  "Reef Break",
+		SeasonStart: time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2026, time.March, 31, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          5,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Jeffreys Bay",
+		LocationID:  5,
+		Difficulty:  3,
+		SurfBreaks:  "Point Break",
+		SeasonStart: time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          6,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Mavericks",
+		LocationID:  6,
+		Difficulty:  5,
+		SurfBreaks:  "Big Wave",
+		SeasonStart: time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2026, time.February, 28, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          7,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Teahupo’o",
+		LocationID:  7,
+		Difficulty:  5,
+		SurfBreaks:  "Reef Break",
+		SeasonStart: time.Date(2025, time.June, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          8,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Banzai Pipeline",
+		LocationID:  8,
+		Difficulty:  5,
+		SurfBreaks:  "Reef Break",
+		SeasonStart: time.Date(2025, time.December, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2026, time.March, 31, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          9,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Uluwatu",
+		LocationID:  9,
+		Difficulty:  4,
+		SurfBreaks:  "Reef Break",
+		SeasonStart: time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.October, 31, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          10,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Bondi Beach",
+		LocationID:  10,
+		Difficulty:  3,
+		SurfBreaks:  "Beach Break",
+		SeasonStart: time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.November, 30, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          11,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Snapper Rocks",
+		LocationID:  11,
+		Difficulty:  3,
+		SurfBreaks:  "Point Break",
+		SeasonStart: time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.October, 31, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          12,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Waimea Bay",
+		LocationID:  12,
+		Difficulty:  4,
+		SurfBreaks:  "Big Wave",
+		SeasonStart: time.Date(2025, time.November, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2026, time.February, 28, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          13,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Raglan",
+		LocationID:  13,
+		Difficulty:  3,
+		SurfBreaks:  "Point Break",
+		SeasonStart: time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.October, 31, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          14,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Teahupo’o Left",
+		LocationID:  14,
+		Difficulty:  5,
+		SurfBreaks:  "Reef Break",
+		SeasonStart: time.Date(2025, time.June, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          15,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Puerto Escondido",
+		LocationID:  15,
+		Difficulty:  4,
+		SurfBreaks:  "Beach Break",
+		SeasonStart: time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          16,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Fistral Beach",
+		LocationID:  16,
+		Difficulty:  3,
+		SurfBreaks:  "Beach Break",
+		SeasonStart: time.Date(2025, time.April, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.October, 31, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          17,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Bells Beach",
+		LocationID:  17,
+		Difficulty:  4,
+		SurfBreaks:  "Point Break",
+		SeasonStart: time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          18,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Canggu",
+		LocationID:  18,
+		Difficulty:  3,
+		SurfBreaks:  "Beach Break",
+		SeasonStart: time.Date(2025, time.May, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.October, 31, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          19,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "Rincon",
+		LocationID:  19,
+		Difficulty:  3,
+		SurfBreaks:  "Point Break",
+		SeasonStart: time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.October, 31, 0, 0, 0, 0, time.UTC),
+	},
+	{
+		ID:          20,
+		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
+		Name:        "El Sunzal",
+		LocationID:  20,
+		Difficulty:  2,
+		SurfBreaks:  "Beach Break",
+		SeasonStart: time.Date(2025, time.March, 1, 0, 0, 0, 0, time.UTC),
+		SeasonEnd:   time.Date(2025, time.September, 30, 0, 0, 0, 0, time.UTC),
+	},
 }
 
 func SeedSpots(db *sql.DB) {
-    for _, s := range Spots {
-        _, err := db.Exec(
-            "INSERT OR IGNORE INTO spots (id, photo_url, name, location_id, difficulty, surf_breaks, season_start, season_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-            s.ID, s.PhotoURL, s.Name, s.LocationID, s.Difficulty, s.SurfBreaks, s.SeasonStart, s.SeasonEnd,
-        )
-        if err != nil {
-            log.Printf("⚠️ Erreur seed spot %s: %v", s.Name, err)
-        }
-    }
-    log.Println("✅ Seeder executed")
+	for _, s := range Spots {
+		_, err := db.Exec(
+			"INSERT OR IGNORE INTO spots (id, photo_url, name, location_id, difficulty, surf_breaks, season_start, season_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+			s.ID, s.PhotoURL, s.Name, s.LocationID, s.Difficulty, s.SurfBreaks, s.SeasonStart, s.SeasonEnd,
+		)
+		if err != nil {
+			log.Printf("⚠️ Erreur seed spot %s: %v", s.Name, err)
+		}
+	}
+	log.Println("✅ Seeder executed")
 }
