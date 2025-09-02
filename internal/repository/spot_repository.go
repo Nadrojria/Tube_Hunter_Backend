@@ -44,7 +44,17 @@ func (repo *SpotRepository) GetAll() ([]model.Spot, error) {
 }
 
 func (repo *SpotRepository) Create(spot model.Spot) error {
-	_, err := repo.DB.Exec("INSERT INTO spots (photo_url, name, location_id, difficulty, surf_breaks, season_start, season_end) VALUES (?, ?, ?, ?, ?, ?, ?)",
+	query := `INSERT INTO spots (
+		photo_url, 
+		name, 
+		location_id, 
+		difficulty, 
+		surf_breaks, 
+		season_start, 
+		season_end) 
+		VALUES (?, ?, ?, ?, ?, ?, ?)
+		`
+	_, err := repo.DB.Exec(query,
 		spot.PhotoURL,
 		spot.Name,
 		spot.LocationID,
