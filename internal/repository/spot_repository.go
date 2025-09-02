@@ -33,10 +33,10 @@ func (repo *SpotRepository) Create(spot model.Spot) error {
 
 func (repo *SpotRepository) GetByID(id int) (*model.Spot, error) {
 	row := repo.DB.QueryRow(`
-        SELECT id, photo_url, name, location_id, difficulty, surf_breaks, season_start, season_end
-        FROM spots
-        WHERE id = ?
-    `, id)
+    SELECT id, photo_url, name, location_id, difficulty, surf_breaks, season_start, season_end
+    FROM spots
+    WHERE id = ?
+`, id)
 
 	var s model.Spot
 	err := row.Scan(&s.ID, &s.PhotoURL, &s.Name, &s.LocationID, &s.Difficulty, &s.SurfBreaks, &s.SeasonStart, &s.SeasonEnd)

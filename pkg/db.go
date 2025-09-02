@@ -21,8 +21,8 @@ func InitDB(filepath string) *sql.DB {
         location_id INTEGER,
         difficulty INTEGER,
         surf_breaks TEXT,
-        season_start DATETIME,
-        season_end DATETIME,
+        season_start DATE,
+        season_end DATE,
         FOREIGN KEY(location_id) REFERENCES locations(id)
     );`
 	_, err = db.Exec(createSpots)
