@@ -35,8 +35,8 @@ func InitDB(filepath string) *sql.DB {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         country TEXT,
         city TEXT,
-        lat INTEGER,
-        long INTEGER
+        lat REAL,
+        long REAL
     );`
 	_, err = db.Exec(createLocations)
 	if err != nil {
