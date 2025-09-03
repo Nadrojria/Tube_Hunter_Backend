@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	db := pkg.InitDB("./tubeHunter.db")
+	db := pkg.InitDB("cmd/tubeHunter.db")
 
 	seeder.SeedSpots(db)
 	seeder.SeedLocations(db)
