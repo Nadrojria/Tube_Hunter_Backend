@@ -2,10 +2,9 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 	"tubeHunter/internal/model"
 	"tubeHunter/internal/repository"
-
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )

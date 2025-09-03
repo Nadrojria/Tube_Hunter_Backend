@@ -118,8 +118,9 @@ func (repo *SpotRepository) GetByID(spotID int) (*model.SpotDTO, error) {
 // 	return err
 // }
 
+// ////    /!\ location ID implique que si l'ID de la table Locations n'existe pas déjà, le spot n'est pas créé. \\\\\\\\
 func (repo *SpotRepository) Create(request model.CreateSpotRequest) (*model.SpotDTO, error) {
-	// Vérifier que la location existe
+	// Vérifier que la location existe :
 	var locationExists bool
 	err := repo.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM locations WHERE id = ?)", request.LocationID).Scan(&locationExists)
 	if err != nil {
