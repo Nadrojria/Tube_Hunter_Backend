@@ -24,7 +24,7 @@ func (handler *SpotHandler) GetSpots(context *gin.Context) {
 }
 
 func (handler *SpotHandler) CreateSpot(context *gin.Context) {
-	var spot model.Spot
+	var spot model.SpotDTO
 	if err := context.ShouldBindJSON(&spot); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

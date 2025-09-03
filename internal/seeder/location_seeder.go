@@ -6,7 +6,7 @@ import (
 	"tubeHunter/internal/model"
 )
 
-var Locations = []model.Location{
+var Locations = []model.LocationDB{
 	{ID: 1, Country: "France", City: "Nice", Lat: 43.7, Long: 7.3},
 	{ID: 2, Country: "Portugal", City: "Nazaré", Lat: 39.6, Long: -9.1},
 	{ID: 3, Country: "France", City: "Hossegor", Lat: 43.66, Long: -1.44},

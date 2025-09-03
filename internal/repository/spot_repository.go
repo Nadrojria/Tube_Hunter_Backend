@@ -9,12 +9,12 @@ type SpotRepository struct {
 	DB *sql.DB
 }
 
-func (repo *SpotRepository) GetAll() ([]model.Spot, error) {
+func (repo *SpotRepository) GetAll() ([]model.SpotDTO, error) {
 	query := `
-        SELECT s.id, s.photo_url, s.name, s.location_id, s.difficulty, s.surf_breaks, s.season_start, s.season_end,
-               l.id, l.country, l.city, l.lat, l.long
+        SELECT s.id, s.photo_url, s.name, s.difficulty, s.surf_breaks, s.season_start, s.season_end,
+               l.country, l.city, l.lat, l.long
         FROM spots s 
-        INNER JOIN locations l ON s.location_id = l.id
+        JOIN locations l ON s.location_id = l.id
     `
 
 	rows, err := repo.DB.Query(query)
@@ -23,15 +23,25 @@ func (repo *SpotRepository) GetAll() ([]model.Spot, error) {
 	}
 	defer rows.Close()
 
-	var spots []model.Spot
+	var spots []model.SpotDTO
 	for rows.Next() {
-		var s model.Spot
-		var l model.Location
+		var s model.SpotDTO
+		var l model.LocationDTO
 
 		err := rows.Scan(
-			&s.ID, &s.PhotoURL, &s.Name, &s.LocationID, &s.Difficulty, &s.SurfBreaks, &s.SeasonStart, &s.SeasonEnd,
-			&l.ID, &l.Country, &l.City, &l.Lat, &l.Long,
+			&s.ID,
+			&s.PhotoURL,
+			&s.Name,
+			&s.Difficulty,
+			&s.SurfBreaks,
+			&s.SeasonStart,
+			&s.SeasonEnd,
+			&l.Country,
+			&l.City,
+			&l.Lat,
+			&l.Long,
 		)
+
 		if err != nil {
 			return nil, err
 		}
@@ -40,10 +50,52 @@ func (repo *SpotRepository) GetAll() ([]model.Spot, error) {
 		spots = append(spots, s)
 	}
 
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
 	return spots, nil
 }
 
-func (repo *SpotRepository) Create(spot model.Spot) error {
+func (repo *SpotRepository) GetByID(spotID int) (*model.SpotDTO, error) {
+	query := `
+        SELECT 
+            s.id, s.photo_url, s.name, s.difficulty, 
+            s.surf_breaks, s.season_start, s.season_end,
+            l.country, l.city, l.lat, l.long
+        FROM spots s
+        JOIN locations l ON s.location_id = l.id
+        WHERE s.id = ?`
+
+	var spot model.SpotDTO
+	var location model.LocationDTO
+
+	row := repo.DB.QueryRow(query, spotID)
+
+	err := row.Scan(
+		&spot.ID,
+		&spot.PhotoURL,
+		&spot.Name,
+		&spot.Difficulty,
+		&spot.SurfBreaks,
+		&spot.SeasonStart,
+		&spot.SeasonEnd,
+		&location.Country,
+		&location.City,
+		&location.Lat,
+		&location.Long,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	spot.Location = location
+
+	return &spot, nil
+}
+
+func (repo *SpotRepository) Create(spot model.SpotDTO) error {
 	query := `INSERT INTO spots (
 		photo_url, 
 		name, 
@@ -57,39 +109,10 @@ func (repo *SpotRepository) Create(spot model.Spot) error {
 	_, err := repo.DB.Exec(query,
 		spot.PhotoURL,
 		spot.Name,
-		spot.LocationID,
+
 		spot.Difficulty,
 		spot.SurfBreaks,
 		spot.SeasonStart,
 		spot.SeasonEnd)
 	return err
-}
-
-func (repo *SpotRepository) GetByID(id int) (*model.Spot, error) {
-	query := `
-        SELECT s.id, s.photo_url, s.name, s.location_id, s.difficulty, s.surf_breaks, s.season_start, s.season_end,
-               l.id, l.country, l.city, l.lat, l.long
-        FROM spots s 
-        INNER JOIN locations l ON s.location_id = l.id
-        WHERE s.id = ?
-    `
-
-	row := repo.DB.QueryRow(query, id)
-
-	var s model.Spot
-	var l model.Location
-
-	err := row.Scan(
-		&s.ID, &s.PhotoURL, &s.Name, &s.LocationID, &s.Difficulty, &s.SurfBreaks, &s.SeasonStart, &s.SeasonEnd,
-		&l.ID, &l.Country, &l.City, &l.Lat, &l.Long,
-	)
-
-	if err == sql.ErrNoRows {
-		return nil, nil //not found
-	} else if err != nil {
-		return nil, err
-	}
-
-	s.Location = l
-	return &s, nil
 }
