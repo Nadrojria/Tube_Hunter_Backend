@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"errors"
 	"tubeHunter/internal/model"
 )
 
@@ -95,24 +96,92 @@ func (repo *SpotRepository) GetByID(spotID int) (*model.SpotDTO, error) {
 	return &spot, nil
 }
 
-func (repo *SpotRepository) Create(spot model.SpotDTO) error {
-	query := `INSERT INTO spots (
-		photo_url, 
-		name, 
-		location_id, 
-		difficulty, 
-		surf_breaks, 
-		season_start, 
-		season_end) 
-		VALUES (?, ?, ?, ?, ?, ?, ?)
-		`
-	_, err := repo.DB.Exec(query,
-		spot.PhotoURL,
-		spot.Name,
+// func (repo *SpotRepository) Create(spot model.SpotDTO) error {
+// 	query := `INSERT INTO spots (
+// 		photo_url,
+// 		name,
+// 		location_id,
+// 		difficulty,
+// 		surf_breaks,
+// 		season_start,
+// 		season_end)
+// 		VALUES (?, ?, ?, ?, ?, ?, ?)
+// 		`
+// 	_, err := repo.DB.Exec(query,
+// 		spot.PhotoURL,
+// 		spot.Name,
 
-		spot.Difficulty,
-		spot.SurfBreaks,
-		spot.SeasonStart,
-		spot.SeasonEnd)
-	return err
+// 		spot.Difficulty,
+// 		spot.SurfBreaks,
+// 		spot.SeasonStart,
+// 		spot.SeasonEnd)
+// 	return err
+// }
+
+func (repo *SpotRepository) Create(request model.CreateSpotRequest) (*model.SpotDTO, error) {
+	// Vérifier que la location existe
+	var locationExists bool
+	err := repo.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM locations WHERE id = ?)", request.LocationID).Scan(&locationExists)
+	if err != nil {
+		return nil, err
+	}
+
+	if !locationExists {
+		return nil, errors.New("location inexistante")
+	}
+
+	// Insertion
+	query := `INSERT INTO spots (photo_url, name, location_id, difficulty, surf_breaks, season_start, season_end) 
+              VALUES (?, ?, ?, ?, ?, ?, ?)`
+
+	result, err := repo.DB.Exec(query,
+		request.PhotoURL,
+		request.Name,
+		request.LocationID,
+		request.Difficulty,
+		request.SurfBreaks,
+		request.SeasonStart,
+		request.SeasonEnd)
+
+	if err != nil {
+		return nil, err
+	}
+
+	spotID, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	// Récupérer le spot créé avec sa location
+	query = `
+        SELECT s.id, s.photo_url, s.name, s.difficulty, s.surf_breaks, s.season_start, s.season_end,
+               l.country, l.city, l.lat, l.long
+        FROM spots s 
+        JOIN locations l ON s.location_id = l.id
+        WHERE s.id = ?
+    `
+
+	var s model.SpotDTO
+	var l model.LocationDTO
+
+	err = repo.DB.QueryRow(query, spotID).Scan(
+		&s.ID,
+		&s.PhotoURL,
+		&s.Name,
+		&s.Difficulty,
+		&s.SurfBreaks,
+		&s.SeasonStart,
+		&s.SeasonEnd,
+		&l.Country,
+		&l.City,
+		&l.Lat,
+		&l.Long,
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	s.Location = l
+	return &s, nil
 }
