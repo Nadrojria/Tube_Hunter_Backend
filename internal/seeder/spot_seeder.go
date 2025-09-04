@@ -233,7 +233,7 @@ var Spots = []model.SpotDTO{
 func SeedSpots(db *sql.DB) {
 	for _, s := range Spots {
 		_, err := db.Exec(
-			"INSERT OR IGNORE INTO spots (id, photo_url, name, location_id, difficulty, surf_breaks, season_start, season_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+			"INSERT OR IGNORE INTO spots (id, photo_url, name, city, country, difficulty, surf_breaks, season_start, season_end) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 			s.ID, s.PhotoURL, s.Name, s.City, s.Country, s.Difficulty, s.SurfBreaks, s.SeasonStart, s.SeasonEnd,
 		)
 		if err != nil {
