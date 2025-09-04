@@ -18,27 +18,14 @@ func InitDB(filepath string) *sql.DB {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         photo_url TEXT,
         name TEXT,
-        location_id INTEGER,
+        city TEXT,
+		country TEXT,
         difficulty INTEGER,
         surf_breaks TEXT,
         season_start DATE,
-        season_end DATE,
-        FOREIGN KEY(location_id) REFERENCES locations(id)
+        season_end DATE
     );`
 	_, err = db.Exec(createSpots)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	createLocations := `
-    CREATE TABLE IF NOT EXISTS locations (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        country TEXT,
-        city TEXT,
-        lat REAL,
-        long REAL
-    );`
-	_, err = db.Exec(createLocations)
 	if err != nil {
 		log.Fatal(err)
 	}

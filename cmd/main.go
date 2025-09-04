@@ -13,7 +13,6 @@ func main() {
 	db := pkg.InitDB("cmd/tubeHunter.db")
 
 	seeder.SeedSpots(db)
-	seeder.SeedLocations(db)
 
 	repo := &repository.SpotRepository{DB: db}
 	handler := &handler.SpotHandler{Repo: repo}
