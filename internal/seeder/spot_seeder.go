@@ -10,7 +10,7 @@ import (
 var Spots = []model.Spot{
 	{
 		ID:          1,
-		PhotoURL:    "https://france3-regions.franceinfo.fr/nouvelle-aquitaine/gironde/arcachon/un-homme-de-51-ans-en-etat-d-urgence-absolue-apres-une-noyade-sur-une-plage-surveillee-de-la-teste-de-buch-3185829.html",
+		PhotoURL:    "https://france3-regions.franceinfo.fr/image/hDOFf8h-w8Xkg5KWtFAuTY_rM-Y/930x620/filters:format(webp)/regions/2020/06/09/5edeef502e213_10537357_749598578416737_7963184676385854126_n.jpg",
 		Name:        "Le Petit Nice",
 		City:        "La Teste-de-Buch",
 		Country:     "France",
@@ -175,7 +175,7 @@ var Spots = []model.Spot{
 	},
 	{
 		ID:          16,
-		PhotoURL:    "ttps://www.surfertoday.com/images/stories/fistral-beach.jpg",
+		PhotoURL:    "https://www.surfertoday.com/images/stories/fistral-beach.jpg",
 		Name:        "Fistral Beach",
 		City:        "Newquay",
 		Country:     "United Kingdom",
