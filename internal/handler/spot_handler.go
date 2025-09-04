@@ -2,10 +2,9 @@ package handler
 
 import (
 	"net/http"
+	// "strconv"
 	"tubeHunter/internal/model"
 	"tubeHunter/internal/repository"
-
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -24,35 +23,38 @@ func (handler *SpotHandler) GetSpots(context *gin.Context) {
 }
 
 func (handler *SpotHandler) CreateSpot(context *gin.Context) {
-	var spot model.SpotDTO
-	if err := context.ShouldBindJSON(&spot); err != nil {
+	var request model.Spot
+	if err := context.ShouldBindJSON(&request); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	if err := handler.Repo.Create(spot); err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	context.JSON(http.StatusCreated, spot)
-}
 
-func (handler *SpotHandler) GetSpotByID(context *gin.Context) {
-	idStr := context.Param("id")
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid ID"})
-		return
-	}
-
-	spot, err := handler.Repo.GetByID(id)
+	createdSpot, err := handler.Repo.Create(request)
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	if spot == nil {
-		context.JSON(http.StatusNotFound, gin.H{"error": "spot not found"})
-		return
-	}
 
-	context.JSON(http.StatusOK, spot)
+	context.JSON(http.StatusCreated, createdSpot)
 }
+
+// func (handler *SpotHandler) GetSpotByID(context *gin.Context) {
+// 	idStr := context.Param("id")
+// 	id, err := strconv.Atoi(idStr)
+// 	if err != nil {
+// 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid ID"})
+// 		return
+// 	}
+
+// 	spot, err := handler.Repo.GetByID(id)
+// 	if err != nil {
+// 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		return
+// 	}
+// 	if spot == nil {
+// 		context.JSON(http.StatusNotFound, gin.H{"error": "spot not found"})
+// 		return
+// 	}
+
+// 	context.JSON(http.StatusOK, spot)
+// }

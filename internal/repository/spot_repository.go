@@ -9,44 +9,37 @@ type SpotRepository struct {
 	DB *sql.DB
 }
 
-func (repo *SpotRepository) GetAll() ([]model.SpotDTO, error) {
+func (repo *SpotRepository) GetAll() ([]model.Spot, error) {
 	query := `
-        SELECT s.id, s.photo_url, s.name, s.difficulty, s.surf_breaks, s.season_start, s.season_end,
-               l.country, l.city, l.lat, l.long
-        FROM spots s 
-        JOIN locations l ON s.location_id = l.id
-    `
-
+        SELECT s.id, s.photo_url, s.name, s.city, s.country, s.difficulty, s.surf_breaks, s.season_start, s.season_end
+		FROM spots s
+`
 	rows, err := repo.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
-	var spots []model.SpotDTO
+	spots := make([]model.Spot, 0)
 	for rows.Next() {
-		var s model.SpotDTO
-		var l model.LocationDTO
+		var s model.Spot
 
 		err := rows.Scan(
 			&s.ID,
 			&s.PhotoURL,
 			&s.Name,
+			&s.City,
+			&s.Country,
 			&s.Difficulty,
 			&s.SurfBreaks,
 			&s.SeasonStart,
 			&s.SeasonEnd,
-			&l.Country,
-			&l.City,
-			&l.Lat,
-			&l.Long,
 		)
 
 		if err != nil {
 			return nil, err
 		}
 
-		s.Location = l
 		spots = append(spots, s)
 	}
 
@@ -57,62 +50,85 @@ func (repo *SpotRepository) GetAll() ([]model.SpotDTO, error) {
 	return spots, nil
 }
 
-func (repo *SpotRepository) GetByID(spotID int) (*model.SpotDTO, error) {
-	query := `
-        SELECT 
-            s.id, s.photo_url, s.name, s.difficulty, 
-            s.surf_breaks, s.season_start, s.season_end,
-            l.country, l.city, l.lat, l.long
-        FROM spots s
-        JOIN locations l ON s.location_id = l.id
-        WHERE s.id = ?`
+// func (repo *SpotRepository) GetByID(spotID int) (*model.Spot, error) {
+// 	query := `
+//         SELECT
+//             s.id, s.photo_url, s.name, s.city, s.country, s.difficulty,
+//             s.surf_breaks, s.season_start, s.season_end
+//         FROM spots s
+//         WHERE s.id = ?;`
 
-	var spot model.SpotDTO
-	var location model.LocationDTO
+// 	var spot model.Spot
 
-	row := repo.DB.QueryRow(query, spotID)
+// 	row := repo.DB.QueryRow(query, spotID)
 
-	err := row.Scan(
-		&spot.ID,
-		&spot.PhotoURL,
-		&spot.Name,
-		&spot.Difficulty,
-		&spot.SurfBreaks,
-		&spot.SeasonStart,
-		&spot.SeasonEnd,
-		&location.Country,
-		&location.City,
-		&location.Lat,
-		&location.Long,
+// 	err := row.Scan(
+// 		&spot.ID,
+// 		&spot.PhotoURL,
+// 		&spot.Name,
+// 		&spot.City,
+// 		&spot.Country,
+// 		&spot.Difficulty,
+// 		&spot.SurfBreaks,
+// 		&spot.SeasonStart,
+// 		&spot.SeasonEnd,
+// 	)
+
+// 	if err != nil {
+// 		return nil, err
+// 	}
+
+// 	return &spot, nil
+// }
+
+func (repo *SpotRepository) Create(request model.Spot) (*model.Spot, error) {
+
+	query := `INSERT INTO spots (photo_url, name, city, country, difficulty, surf_breaks, season_start, season_end) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+
+	result, err := repo.DB.Exec(query,
+		request.PhotoURL,
+		request.Name,
+		request.City,
+		request.Country,
+		request.Difficulty,
+		request.SurfBreaks,
+		request.SeasonStart,
+		request.SeasonEnd)
+
+	if err != nil {
+		return nil, err
+	}
+
+	spotID, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+
+	query = `
+        SELECT s.id, s.photo_url, s.name, s.city, s.country, s.difficulty, 
+		s.surf_breaks, s.season_start, s.season_end     
+        FROM spots s 
+        WHERE s.id = ?
+    `
+
+	var s model.Spot
+
+	err = repo.DB.QueryRow(query, spotID).Scan(
+		&s.ID,
+		&s.PhotoURL,
+		&s.Name,
+		&s.City,
+		&s.Country,
+		&s.Difficulty,
+		&s.SurfBreaks,
+		&s.SeasonStart,
+		&s.SeasonEnd,
 	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	spot.Location = location
-
-	return &spot, nil
-}
-
-func (repo *SpotRepository) Create(spot model.SpotDTO) error {
-	query := `INSERT INTO spots (
-		photo_url, 
-		name, 
-		location_id, 
-		difficulty, 
-		surf_breaks, 
-		season_start, 
-		season_end) 
-		VALUES (?, ?, ?, ?, ?, ?, ?)
-		`
-	_, err := repo.DB.Exec(query,
-		spot.PhotoURL,
-		spot.Name,
-
-		spot.Difficulty,
-		spot.SurfBreaks,
-		spot.SeasonStart,
-		spot.SeasonEnd)
-	return err
+	return &s, nil
 }
