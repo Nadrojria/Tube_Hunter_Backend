@@ -9,7 +9,7 @@ type SpotRepository struct {
 	DB *sql.DB
 }
 
-func (repo *SpotRepository) GetAll() ([]model.SpotDTO, error) {
+func (repo *SpotRepository) GetAll() ([]model.Spot, error) {
 	query := `
         SELECT s.id, s.photo_url, s.name, s.city, s.country, s.difficulty, s.surf_breaks, s.season_start, s.season_end
 		FROM spots s
@@ -21,9 +21,9 @@ func (repo *SpotRepository) GetAll() ([]model.SpotDTO, error) {
 	}
 	defer rows.Close()
 
-	spots := make([]model.SpotDTO, 0)
+	spots := make([]model.Spot, 0)
 	for rows.Next() {
-		var s model.SpotDTO
+		var s model.Spot
 
 		err := rows.Scan(
 			&s.ID,
@@ -51,7 +51,7 @@ func (repo *SpotRepository) GetAll() ([]model.SpotDTO, error) {
 	return spots, nil
 }
 
-func (repo *SpotRepository) GetByID(spotID int) (*model.SpotDTO, error) {
+func (repo *SpotRepository) GetByID(spotID int) (*model.Spot, error) {
 	query := `
         SELECT 
             s.id, s.photo_url, s.name, s.city, s.country, s.difficulty, 
@@ -59,7 +59,7 @@ func (repo *SpotRepository) GetByID(spotID int) (*model.SpotDTO, error) {
         FROM spots s
         WHERE s.id = ?;`
 
-	var spot model.SpotDTO
+	var spot model.Spot
 
 	row := repo.DB.QueryRow(query, spotID)
 
@@ -82,29 +82,7 @@ func (repo *SpotRepository) GetByID(spotID int) (*model.SpotDTO, error) {
 	return &spot, nil
 }
 
-// func (repo *SpotRepository) Create(spot model.SpotDTO) error {
-// 	query := `INSERT INTO spots (
-// 		photo_url,
-// 		name,
-// 		location_id,
-// 		difficulty,
-// 		surf_breaks,
-// 		season_start,
-// 		season_end)
-// 		VALUES (?, ?, ?, ?, ?, ?, ?)
-// 		`
-// 	_, err := repo.DB.Exec(query,
-// 		spot.PhotoURL,
-// 		spot.Name,
-
-// 		spot.Difficulty,
-// 		spot.SurfBreaks,
-// 		spot.SeasonStart,
-// 		spot.SeasonEnd)
-// 	return err
-// }
-
-func (repo *SpotRepository) Create(request model.CreateSpotRequest) (*model.SpotDTO, error) {
+func (repo *SpotRepository) Create(request model.CreateSpotRequest) (*model.Spot, error) {
 
 	query := `INSERT INTO spots (photo_url, name, city, country, difficulty, surf_breaks, season_start, season_end) 
               VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
@@ -128,7 +106,6 @@ func (repo *SpotRepository) Create(request model.CreateSpotRequest) (*model.Spot
 		return nil, err
 	}
 
-	// Récupérer le spot créé avec sa location
 	query = `
         SELECT s.id, s.photo_url, s.name, s.city, s.country, s.difficulty, 
 		s.surf_breaks, s.season_start, s.season_end     
@@ -136,7 +113,7 @@ func (repo *SpotRepository) Create(request model.CreateSpotRequest) (*model.Spot
         WHERE s.id = ?
     `
 
-	var s model.SpotDTO
+	var s model.Spot
 
 	err = repo.DB.QueryRow(query, spotID).Scan(
 		&s.ID,

@@ -7,7 +7,7 @@ import (
 	"tubeHunter/internal/model"
 )
 
-var Spots = []model.SpotDTO{
+var Spots = []model.Spot{
 	{
 		ID:          1,
 		PhotoURL:    "https://res.cloudinary.com/manawa/image/private/f_auto,c_limit,w_3840,q_auto/aykvlohikeutpdcp720o",
