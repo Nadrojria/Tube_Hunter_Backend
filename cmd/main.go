@@ -20,7 +20,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/api/spots", handler.GetSpots)
 	router.POST("/api/spots", handler.CreateSpot)
-	router.GET("/api/spots/:id", handler.GetSpotByID)
+	// router.GET("/api/spots/:id", handler.GetSpotByID)
 
 	router.Run(":8080")
 }
