@@ -23,7 +23,8 @@ func InitDB(filepath string) *sql.DB {
         difficulty INTEGER,
         surf_breaks TEXT,
         season_start DATE,
-        season_end DATE
+        season_end DATE,
+		CONSTRAINT unique_combination UNIQUE (name, city, country)
     );`
 	_, err = db.Exec(createSpots)
 	if err != nil {
