@@ -60,24 +60,3 @@ func (handler *SpotHandler) UploadImage(context *gin.Context) {
 	imageURL := fmt.Sprintf("http://localhost:8080/uploads/%s", filename)
 	context.JSON(http.StatusOK, gin.H{"photoUrl": imageURL})
 }
-
-// func (handler *SpotHandler) GetSpotByID(context *gin.Context) {
-// 	idStr := context.Param("id")
-// 	id, err := strconv.Atoi(idStr)
-// 	if err != nil {
-// 		context.JSON(http.StatusBadRequest, gin.H{"error": "invalid ID"})
-// 		return
-// 	}
-
-// 	spot, err := handler.Repo.GetByID(id)
-// 	if err != nil {
-// 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-// 		return
-// 	}
-// 	if spot == nil {
-// 		context.JSON(http.StatusNotFound, gin.H{"error": "spot not found"})
-// 		return
-// 	}
-
-// 	context.JSON(http.StatusOK, spot)
-// }
