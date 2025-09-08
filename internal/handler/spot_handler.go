@@ -1,8 +1,9 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
-	// "strconv"
+	"time"
 	"tubeHunter/internal/model"
 	"tubeHunter/internal/repository"
 
@@ -36,6 +37,28 @@ func (handler *SpotHandler) CreateSpot(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusCreated, createdSpot)
+}
+
+func (handler *SpotHandler) UploadImage(context *gin.Context) {
+	// Récupérer l'image depuis le formulaire
+	file, err := context.FormFile("image")
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{"error": "Image not found"})
+		return
+	}
+
+	// Créer un nom unique pour éviter les doublons
+	filename := fmt.Sprintf("%d_%s", time.Now().Unix(), file.Filename)
+
+	// Sauvegarder le fichier (Gin le fait automatiquement)
+	if err := context.SaveUploadedFile(file, "uploads/"+filename); err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": "Could not save image"})
+		return
+	}
+
+	// Retourner l'URL de l'image
+	imageURL := fmt.Sprintf("http://localhost:8080/uploads/%s", filename)
+	context.JSON(http.StatusOK, gin.H{"photoUrl": imageURL})
 }
 
 // func (handler *SpotHandler) GetSpotByID(context *gin.Context) {
