@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 	"tubeHunter/internal/model"
 	"tubeHunter/internal/repository"
@@ -65,9 +66,15 @@ func (handler *SpotHandler) UploadImage(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Could not save image"})
 		return
 	}
+	// Construire l'URL basée sur la requête entrante
+	scheme := "http"
+	if context.Request.TLS != nil {
+		scheme = "https"
+	}
+	// Utilise automatiquement l'IP/host d'où vient la requête
+	host := context.Request.Host
 
 	// Retourner l'URL de l'image
-	imageURL := fmt.Sprintf("http://localhost:8080/uploads/%s", filename)
+	imageURL := fmt.Sprintf("%s://%s/uploads/%s", scheme, host, filename)
 	context.JSON(http.StatusOK, gin.H{"photoUrl": imageURL})
 }
-
