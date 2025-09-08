@@ -50,37 +50,6 @@ func (repo *SpotRepository) GetAll() ([]model.Spot, error) {
 	return spots, nil
 }
 
-// func (repo *SpotRepository) GetByID(spotID int) (*model.Spot, error) {
-// 	query := `
-//         SELECT
-//             s.id, s.photo_url, s.name, s.city, s.country, s.difficulty,
-//             s.surf_breaks, s.season_start, s.season_end
-//         FROM spots s
-//         WHERE s.id = ?;`
-
-// 	var spot model.Spot
-
-// 	row := repo.DB.QueryRow(query, spotID)
-
-// 	err := row.Scan(
-// 		&spot.ID,
-// 		&spot.PhotoURL,
-// 		&spot.Name,
-// 		&spot.City,
-// 		&spot.Country,
-// 		&spot.Difficulty,
-// 		&spot.SurfBreaks,
-// 		&spot.SeasonStart,
-// 		&spot.SeasonEnd,
-// 	)
-
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	return &spot, nil
-// }
-
 func (repo *SpotRepository) Create(request model.Spot) (*model.Spot, error) {
 
 	query := `INSERT INTO spots (photo_url, name, city, country, difficulty, surf_breaks, season_start, season_end) 
