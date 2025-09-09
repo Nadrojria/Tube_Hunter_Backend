@@ -58,7 +58,7 @@ func (handler *SpotHandler) UploadImage(context *gin.Context) {
 		return
 	}
 
-	// Créer un nom unique pour éviter les doublons
+	// Créer un nom unique
 	filename := fmt.Sprintf("%d_%s", time.Now().Unix(), file.Filename)
 
 	// Sauvegarder le fichier (Gin le fait automatiquement)
@@ -66,8 +66,15 @@ func (handler *SpotHandler) UploadImage(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Could not save image"})
 		return
 	}
+	// Construire l'URL basée sur la requête entrante(BASE_URL!)
+	scheme := "http"
+	if context.Request.TLS != nil {
+		scheme = "https"
+	}
+	// Utilise automatiquement l'IP/host d'où vient la requête(FOUTU BASE_URL!)
+	host := context.Request.Host
 
 	// Retourner l'URL de l'image
-	imageURL := fmt.Sprintf("http://localhost:8080/uploads/%s", filename)
+	imageURL := fmt.Sprintf("%s://%s/uploads/%s", scheme, host, filename)
 	context.JSON(http.StatusOK, gin.H{"photoUrl": imageURL})
 }
