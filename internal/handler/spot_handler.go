@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 	"tubeHunter/internal/model"
 	"tubeHunter/internal/repository"
@@ -23,7 +24,7 @@ func (handler *SpotHandler) GetSpots(context *gin.Context) {
 	context.JSON(http.StatusOK, spots)
 }
 
-func (handler SpotHandler) CreateSpot(context *gin.Context) {
+func (handler *SpotHandler) CreateSpot(context *gin.Context) {
 	var request model.Spot
 	if err := context.ShouldBindJSON(&request); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -70,4 +71,3 @@ func (handler *SpotHandler) UploadImage(context *gin.Context) {
 	imageURL := fmt.Sprintf("http://localhost:8080/uploads/%s", filename)
 	context.JSON(http.StatusOK, gin.H{"photoUrl": imageURL})
 }
-
