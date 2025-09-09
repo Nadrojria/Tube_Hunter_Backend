@@ -3,7 +3,6 @@ package handler
 import (
 	"net/http"
 	"strings"
-
 	"tubeHunter/internal/model"
 	"tubeHunter/internal/repository"
 
@@ -23,7 +22,7 @@ func (handler *SpotHandler) GetSpots(context *gin.Context) {
 	context.JSON(http.StatusOK, spots)
 }
 
-func (handler SpotHandler) CreateSpot(context *gin.Context) {
+func (handler *SpotHandler) CreateSpot(context *gin.Context) {
 	var request model.Spot
 	if err := context.ShouldBindJSON(&request); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
