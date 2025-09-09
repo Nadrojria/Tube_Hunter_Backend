@@ -18,6 +18,9 @@ func main() {
 	handler := &handler.SpotHandler{Repo: repo}
 
 	router := gin.Default()
+
+	router.Static("/uploads", "./uploads") // Servir les fichiers images
+	router.POST("/api/upload-image", handler.UploadImage)
 	router.GET("/api/spots", handler.GetSpots)
 	router.POST("/api/spots", handler.CreateSpot)
 	// router.GET("/api/spots/:id", handler.GetSpotByID)
