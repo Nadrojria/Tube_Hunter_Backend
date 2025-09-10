@@ -19,7 +19,7 @@ func main() {
 
 	router := gin.Default()
 
-	router.Static("/uploads", "./uploads") // Accéder aux images(fichiers static) || "/uploads" = chemin pour le client et "./uploads" = chemin local où sont stockées les images
+	router.Static("/uploads", "./uploads") // Image access (static file) || "/uploads" = client path "./uploads" = local path where images are stocked
 	router.POST("/api/upload", handler.UploadImage)
 	router.GET("/api/spots", handler.GetSpots)
 	router.POST("/api/spots", handler.CreateSpot)
