@@ -11,12 +11,13 @@ type SpotRepository struct {
 
 func (repo *SpotRepository) GetAll() ([]model.Spot, error) {
 	query := `
-        SELECT s.id, s.photo_url, s.name, s.city, s.country, s.difficulty, s.surf_breaks, s.season_start, s.season_end
+        SELECT s.id, s.photo_url, s.name, s.city, s.country, s.difficulty, 
+		s.surf_breaks, s.season_start, s.season_end
 		FROM spots s
-`
+	`
 	rows, err := repo.DB.Query(query)
 	if err != nil {
-		return nil, err
+		return nil, err // nil = no usefull result to return
 	}
 	defer rows.Close()
 
@@ -52,8 +53,11 @@ func (repo *SpotRepository) GetAll() ([]model.Spot, error) {
 
 func (repo *SpotRepository) Create(request model.Spot) (*model.Spot, error) {
 
-	query := `INSERT INTO spots (photo_url, name, city, country, difficulty, surf_breaks, season_start, season_end) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+	query := `
+			INSERT INTO spots (photo_url, name, city, country, difficulty, 
+			surf_breaks, season_start, season_end) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+		`
 
 	result, err := repo.DB.Exec(query,
 		request.PhotoURL,

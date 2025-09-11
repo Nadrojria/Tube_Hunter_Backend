@@ -51,30 +51,29 @@ func (handler *SpotHandler) CreateSpot(context *gin.Context) {
 }
 
 func (handler *SpotHandler) UploadImage(context *gin.Context) {
-	// Récupérer l'image depuis le formulaire
 	file, err := context.FormFile("image")
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": "Image not found"})
 		return
 	}
 
-	// Créer un nom unique
 	filename := fmt.Sprintf("%d_%s", time.Now().Unix(), file.Filename)
 
-	// Sauvegarder le fichier (Gin le fait automatiquement)
+	// Save file (Gin does it automatically)
 	if err := context.SaveUploadedFile(file, "uploads/"+filename); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": "Could not save image"})
 		return
 	}
-	// Construire l'URL basée sur la requête entrante(BASE_URL!)
+
+	// URL construction from request(BASE_URL)
 	scheme := "http"
 	if context.Request.TLS != nil {
 		scheme = "https"
 	}
-	// Utilise automatiquement l'IP/host d'où vient la requête(FOUTU BASE_URL!)
+
+	// Automatically use IP/host where the request came from
 	host := context.Request.Host
 
-	// Retourner l'URL de l'image
 	imageURL := fmt.Sprintf("%s://%s/uploads/%s", scheme, host, filename)
 	context.JSON(http.StatusOK, gin.H{"photoUrl": imageURL})
 }
