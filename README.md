@@ -1,6 +1,6 @@
 # Tube Hunter  
 
-Application qui référence les meilleurs spots de surf.    
+Application Mobile qui référence les meilleurs spots de surf.    
 
 Type : collectif — 4 personnes     
 Durée : 4 semaines    
